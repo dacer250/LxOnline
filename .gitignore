@@ -1,0 +1,11 @@
+.idea
+*.pyc
+*.out
+*.bak
+*.iml
+.DS_Store
+*/migrations
+media
+
+
+
