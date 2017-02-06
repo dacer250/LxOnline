@@ -37,7 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'apps.users',
+    'apps.courses',
+    'apps.organization',
+    'apps.operation',
 ]
+AUTH_USER_MODEL = 'users.UserProfile'
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -126,4 +131,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+MEDIA_URL = '/media/'
+MEDIA_root = os.path.join(BASE_DIR, 'media')
+
 
