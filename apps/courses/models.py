@@ -1,12 +1,16 @@
 # encoding:utf-8
 from __future__ import unicode_literals
+from __future__ import absolute_import
 
 from django.db import models
+
+from apps.organization.models import CourseOrg
 
 # Create your models here.
 
 
 class Course(models.Model):
+    organization = models.ForeignKey(CourseOrg, verbose_name=u'所属机构')
     name = models.CharField(max_length=50, verbose_name=u'课程名')
     desc = models.CharField(max_length=300, verbose_name=u'描述')
     detail = models.TextField(verbose_name=u'详情')

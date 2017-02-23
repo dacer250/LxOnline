@@ -1,3 +1,4 @@
+# encoding=utf-8
 """LxOnline URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -15,7 +16,9 @@ Including another URLconf
     3. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import url, include
+from django.conf import settings
 from django.views.generic import TemplateView
+from django.conf.urls.static import static
 import xadmin
 import captcha
 
@@ -35,6 +38,11 @@ urlpatterns = [
     url(r'^reset_pwd/(?P<reset_code>.*)/$', ResetPwdView.as_view(), name='reset_pwd'),
     url(r'^modify_pwd/$', ModifyPwdView.as_view(), name='modify_pwd'),
 
+    # 课程机构urls
+    url(r'^org/', include('apps.organization.urls', namespace='org')),
+
 
 
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
