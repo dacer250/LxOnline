@@ -1,6 +1,7 @@
 # encoding:utf-8
 import xadmin
 from xadmin import views
+from xadmin.plugins.auth import UserAdmin
 
 from .models import UserProfile, EmailVerifyRecord, Banner
 # Register your models here.
@@ -23,11 +24,8 @@ xadmin.site.register(views.CommAdminView, GlobalSetting)
 # --------------------------------------------------------------------------------
 
 
-class UserProfileAdmin(object):
-    list_display = ['username', 'email', 'mobile', 'date_joined']
-    search_fields = ['username', 'email', 'mobile', 'address']
-    list_filter = ['username', 'email', 'mobile', 'birthday', 'gender',
-                   'is_staff', 'is_active', 'date_joined']
+class UserProfileAdmin(UserAdmin):
+    pass
 
 
 class EmailVerifyRecordAdmin(object):
@@ -42,6 +40,8 @@ class BannerAdmin(object):
     list_filter = ['title', 'image', 'url', 'index', 'create_time']
 
 
+from django.contrib.auth.models import User
+xadmin.site.unregister(User)
 xadmin.site.register(UserProfile, UserProfileAdmin)
 xadmin.site.register(EmailVerifyRecord, EmailVerifyRecordAdmin)
 xadmin.site.register(Banner, BannerAdmin)

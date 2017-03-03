@@ -38,8 +38,11 @@ urlpatterns = [
     url(r'^reset_pwd/(?P<reset_code>.*)/$', ResetPwdView.as_view(), name='reset_pwd'),
     url(r'^modify_pwd/$', ModifyPwdView.as_view(), name='modify_pwd'),
 
-    # 课程机构urls
+    # 课程机构相关urls
     url(r'^org/', include('apps.organization.urls', namespace='org')),
+
+    # 课程相关urls
+    url(r'^course/', include('apps.courses.urls', namespace='course')),
 
 
 

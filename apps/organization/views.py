@@ -1,11 +1,11 @@
 # encoding=utf-8
 from __future__ import absolute_import
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.views.generic.base import View
 
-from .models import City, CourseOrg
+from .models import City, CourseOrg, Teacher
 from apps.operation.models import UserFavorite
 from utils.paginator import object_paginator
 
@@ -39,6 +39,7 @@ class OrgView(View):
             elif sort == 'courses':
                 all_course_org = CourseOrg.objects.order_by('-course_num')
 
+        # 分页
         course_org_page = object_paginator(request, all_course_org, 2)
 
         course_org_num = all_course_org.count()
@@ -144,7 +145,51 @@ class OrgFavView(View):
                 return JsonResponse({'status': 'fail', 'meg': u'收藏失败'})
 
 
+class TeacherListView(View):
+    """
+    教师列表
+    """
+    def get(self, request):
+        all_teachers = Teacher.objects.all()
+        all_teachers_num = all_teachers.count()
 
+        # 根据教师人气进行排序
+        sort = request.GET.get('sort', '')
+        if sort:
+            if sort == 'hot':
+                all_teachers = Teacher.objects.order_by('-click_num')
+
+        sorted_teachers = all_teachers.order_by('-click_num')[:3]
+
+        # 分页
+        all_teachers_page = object_paginator(request, all_teachers, 2)
+
+        return render(request, 'teachers-list.html', {
+            'all_teachers_page': all_teachers_page,
+            'all_teachers_num': all_teachers_num,
+            'sorted_teachers': sorted_teachers,
+            'sort': sort,
+
+        })
+
+
+class TeacherDetailView(View):
+    """
+    课程详情功能
+    """
+    def get(self, request, teacher_id):
+        teacher = get_object_or_404(Teacher, id=int(teacher_id))
+
+        # 讲师的点击数需加一
+        teacher.click_num += 1
+        teacher.save()
+
+        sorted_teachers = Teacher.objects.order_by('-click_num')[:3]
+
+        return render(request, 'teacher-detail.html', {
+            'teacher': teacher,
+            'sorted_teachers': sorted_teachers,
+        })
 
 
 
